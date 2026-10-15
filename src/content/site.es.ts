@@ -50,6 +50,8 @@ export const home: typeof en.home = {
       { n: "02", title: "Contrata", text: "Elige un trabajador o un equipo. Trabajando en unos 7 días." },
       { n: "03", title: "Crece", text: "Mira en tu Studio lo que hizo cada trabajador este mes. Suma más cuando estés listo." },
     ],
+    day: "Día {d} de 7",
+    stats: { items: ["prospectos", "respondidos", "agendados"], pending: "Example numbers: real results from a client (08_proof)." },
   },
   journey: {
     eyebrow: "El recorrido del cliente",

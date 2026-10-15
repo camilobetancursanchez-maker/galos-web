@@ -26,7 +26,7 @@ type Dot = {
 };
 
 /** The ink color as "r,g,b", read from the --color-ink token so the stars follow the theme */
-function readInk() {
+export function readInk() {
   const v = getComputedStyle(document.documentElement).getPropertyValue("--color-ink").trim();
   let hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(v)?.[1];
   if (!hex) return "11,11,11";
@@ -35,7 +35,7 @@ function readInk() {
   return `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`;
 }
 
-function rand(seed: number) {
+export function rand(seed: number) {
   // Small deterministic PRNG so the sky looks the same on every visit
   let s = seed >>> 0;
   return () => {

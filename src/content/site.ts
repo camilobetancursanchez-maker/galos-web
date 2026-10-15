@@ -65,6 +65,8 @@ export const home = {
       { n: "02", title: "Hire", text: "Pick a worker or a team. Working in about 7 days." },
       { n: "03", title: "Grow", text: "See what every worker did this month in your Studio. Add more when you're ready." },
     ],
+    day: "Day {d} of 7",
+    stats: { items: ["leads", "answered", "booked"], pending: "Example numbers: real results from a client (08_proof)." },
   },
   journey: {
     eyebrow: "The client journey",
