@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* dark: utilities follow the toggle (data-theme on <html>), not the system setting */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* ───────────── Galos: a gallery of stars ─────────────
    Values from Galos Brand/06 UI UX/Design Tokens.md. The website page is white
    (the gallery wall, the white sky); black is the stars, the lines and the one action. */
@@ -12,12 +15,30 @@
   --color-faint: #aeaeb2;
   --color-line: #e5e5ea;
   --color-line-strong: #d1d1d6;
+  --color-glow: #ffffff; /* museum light on a statue frame */
 
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Helvetica Neue", sans-serif;
   --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Helvetica Neue", sans-serif;
 
   --ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark mode: the night sky. Black page, white stars. "white" here means the paper
+   (cards, sheets), so every bg-white / text-white flips with it.
+   ThemeToggle sets data-theme on <html>; the choice is kept in localStorage. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-sky: #000000;
+  --color-white: #0b0b0b;
+  --color-wash: #161618;
+  --color-well: #232326;
+  --color-ink: #ffffff;
+  --color-muted: #98989d;
+  --color-faint: #636366;
+  --color-line: #232326;
+  --color-line-strong: #3a3a3c;
+  --color-glow: #2c2c30;
 }
 
 @layer base {
@@ -28,6 +49,7 @@
   }
   body {
     background: var(--color-sky);
+    transition: background-color 400ms, color 400ms;
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 17px;
@@ -43,7 +65,7 @@
     line-height: 1.02;
     text-wrap: balance;
   }
-  ::selection { background: var(--color-ink); color: #fff; }
+  ::selection { background: var(--color-ink); color: var(--color-white); }
   :focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; border-radius: 6px; }
   .grid > * { min-width: 0; }
 }
@@ -92,21 +114,21 @@
     transition: transform 90ms var(--ease-spring), background-color 200ms, color 200ms, box-shadow 200ms;
   }
   .btn:active { transform: scale(0.97); }
-  .btn-ink { background: var(--color-ink); color: #fff; }
-  .btn-ink:hover { background: #2a2a2a; }
-  .btn-line { box-shadow: inset 0 0 0 1px var(--color-ink); color: var(--color-ink); background: #fff; }
-  .btn-line:hover { background: var(--color-ink); color: #fff; }
+  .btn-ink { background: var(--color-ink); color: var(--color-white); }
+  .btn-ink:hover { background: color-mix(in srgb, var(--color-ink) 84%, var(--color-white)); }
+  .btn-line { box-shadow: inset 0 0 0 1px var(--color-ink); color: var(--color-ink); background: var(--color-white); }
+  .btn-line:hover { background: var(--color-ink); color: var(--color-white); }
   .btn-lg { height: 56px; padding-inline: 28px; font-size: 17px; }
 
   .chip {
     display: inline-flex; align-items: center; gap: 8px; height: 40px; padding-inline: 16px;
-    border-radius: 999px; font-size: 15px; font-weight: 500; background: #fff;
+    border-radius: 999px; font-size: 15px; font-weight: 500; background: var(--color-white);
     box-shadow: inset 0 0 0 1px var(--color-line-strong); color: var(--color-ink);
     transition: box-shadow 200ms, background-color 200ms, color 200ms, transform 90ms var(--ease-spring);
   }
   .chip:hover { box-shadow: inset 0 0 0 1px var(--color-ink); }
   .chip:active { transform: scale(0.97); }
-  .chip[aria-pressed="true"] { background: var(--color-ink); color: #fff; box-shadow: none; }
+  .chip[aria-pressed="true"] { background: var(--color-ink); color: var(--color-white); box-shadow: none; }
 
   .hairline { height: 1px; background: var(--color-line); border: 0; }
 }

@@ -6,13 +6,13 @@ import { SkyMap } from "@/components/sky/SkyMap";
 import { AgentCard } from "@/components/agents/AgentCard";
 import { Pending } from "@/components/ui/Pending";
 
-/** 03 · The Collection preview — the sky, then the first three walls. Section: 13_sections/01_home/03_collection-preview */
-export function CollectionPreview() {
-  const { collection } = home;
+/** 05 · Meet the workers — the sky, then the first three walls. Section: 13_sections/01_home/05_meet-the-workers */
+export function MeetTheWorkers() {
+  const { workers: collection } = home;
   const first = agents.slice(0, 3);
   const figures = figureMap(first.map((a) => a.slug));
   return (
-    <section className="section pt-0">
+    <section id="workers" className="section">
       <div className="wrap">
         <div className="reveal grid gap-6 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
@@ -30,7 +30,7 @@ export function CollectionPreview() {
           ))}
         </div>
         <div className="mt-16 flex justify-center">
-          <Link href="/agents" className="btn btn-line btn-lg">See all ten agents</Link>
+          <Link href="/workers" className="btn btn-line btn-lg">See all ten workers</Link>
         </div>
       </div>
     </section>

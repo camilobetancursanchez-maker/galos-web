@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * The Galos sky, drawn on a canvas: black stars on a white sky.
+ * The Galos sky, drawn on a canvas: black stars on a white sky (white on black in dark mode).
  *
  * mode "lattice" (the hero): the page opens as a perfect dot grid (the Braun /
  * Mac Pro grille, the system). The grid lets go and becomes a sky (the art).
@@ -25,7 +25,15 @@ type Dot = {
   o: number; // current "order" 0 (sky) .. 1 (grid), smoothed
 };
 
-const INK = "11,11,11";
+/** The ink color as "r,g,b", read from the --color-ink token so the stars follow the theme */
+function readInk() {
+  const v = getComputedStyle(document.documentElement).getPropertyValue("--color-ink").trim();
+  let hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(v)?.[1];
+  if (!hex) return "11,11,11";
+  if (hex.length === 3) hex = hex.replace(/./g, "$&$&");
+  const n = parseInt(hex, 16);
+  return `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`;
+}
 
 function rand(seed: number) {
   // Small deterministic PRNG so the sky looks the same on every visit
@@ -64,6 +72,7 @@ export function Starfield({
     const start = performance.now();
     const pointer = { x: -9999, y: -9999, last: 0, has: false };
     let scrollY = window.scrollY;
+    let INK = readInk();
 
     const build = () => {
       const rect = canvas.getBoundingClientRect();
@@ -248,8 +257,16 @@ export function Starfield({
     window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("visibilitychange", onVis);
 
+    // Theme switch: repaint the stars in the new ink
+    const mo = new MutationObserver(() => {
+      INK = readInk();
+      if (reduce) frame(performance.now());
+    });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
     return () => {
       cancelAnimationFrame(raf);
+      mo.disconnect();
       ro.disconnect();
       io.disconnect();
       window.removeEventListener("pointermove", onMove);

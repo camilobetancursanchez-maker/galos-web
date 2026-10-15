@@ -5,8 +5,8 @@ import { home } from "@/content/site";
 import { Pending } from "@/components/ui/Pending";
 
 /**
- * 04 · How it works — three stars on one line. As you scroll, the black signal
- * travels from Ask to Hire to See the numbers. Section: 13_sections/01_home/04_how-it-works
+ * 02 · How it works — three stars on one line. As you scroll, the black signal
+ * travels from Ask to Hire to Grow. Section: 13_sections/01_home/02_how-it-works
  */
 export function HowItWorks() {
   const ref = useRef<HTMLDivElement>(null);
@@ -44,7 +44,7 @@ export function HowItWorks() {
   const at = (i: number) => i / (n - 1);
 
   return (
-    <section ref={ref} className="relative h-[260svh]">
+    <section ref={ref} id="how" className="relative h-[260svh]">
       <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden">
         <div className="wrap">
           <div className="flex items-end justify-between gap-6">
@@ -61,7 +61,7 @@ export function HowItWorks() {
           <div className="relative mt-20 hidden md:block">
             <div className="absolute left-0 right-0 top-[7px] h-px bg-line" />
             <div className="absolute left-0 top-[7px] h-px bg-ink" style={{ width: `${p * 100}%` }} />
-            <div className="absolute top-[3px] h-[9px] w-[9px] -translate-x-1/2 rounded-full bg-ink shadow-[0_0_0_6px_#fff]" style={{ left: `${p * 100}%` }} />
+            <div className="absolute top-[3px] h-[9px] w-[9px] -translate-x-1/2 rounded-full bg-ink shadow-[0_0_0_6px_var(--color-white)]" style={{ left: `${p * 100}%` }} />
             <ol className="relative grid grid-cols-3">
               {how.steps.map((s, i) => {
                 const on = p >= at(i) - 0.001;

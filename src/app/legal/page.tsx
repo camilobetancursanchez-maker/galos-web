@@ -14,7 +14,7 @@ export default function LegalPage() {
         {[
           ["AI disclosure", `${site.disclosure} Every agent says it is an AI. A person at Galos sets it up, watches it and answers for it.`],
           ["Privacy policy", "How Galos collects, uses and protects personal data (Ley 1581 de 2012)."],
-          ["Terms", "The terms for hiring or buying an agent."],
+          ["Terms", "The terms for hiring or buying a worker."],
         ].map(([t, d]) => (
           <article key={t} className="reveal border-t border-ink pt-6">
             <h2 className="h3">{t}</h2>

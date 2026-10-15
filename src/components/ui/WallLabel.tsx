@@ -1,8 +1,8 @@
-import type { Agent } from "@/content/agents";
+import { wings, type Agent } from "@/content/agents";
 import { site } from "@/content/site";
 import { Pending } from "./Pending";
 
-/** The museum label next to every statue: the system, under the art. Section: 13_sections/02_agents/03_wall-label-card */
+/** The museum label next to every statue: the system, under the art. Section: 13_sections/02_workers/03_wall-label-card */
 export function WallLabel({ agent, full = false, as: H = "h3" }: { agent: Agent; full?: boolean; as?: "h1" | "h2" | "h3" }) {
   return (
     <div className="text-ink">
@@ -17,8 +17,8 @@ export function WallLabel({ agent, full = false, as: H = "h3" }: { agent: Agent;
       <p className={full ? "mt-6 text-xl leading-snug" : "mt-3 text-[15px] leading-snug"}>{agent.does}</p>
       {full && (
         <dl className="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 border-t border-line pt-6 text-[15px]">
-          <dt className="label pt-0.5">Area</dt>
-          <dd>{agent.area}</dd>
+          <dt className="label pt-0.5">Wing</dt>
+          <dd>{agent.wing} · <span className="text-muted">{wings.find((w) => w.name === agent.wing)?.plain}</span></dd>
           <dt className="label pt-0.5">Measured on</dt>
           <dd>{agent.measuredOn}</dd>
           <dt className="label pt-0.5">Channels</dt>

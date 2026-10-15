@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Results" };
 
 const CASES = [
   { client: "Finaro", what: "Website in code + lead capture into GoHighLevel", metric: "Leads / month" },
-  { client: "Crambol", what: "WhatsApp agent for the club", metric: "Messages answered" },
+  { client: "Crambol", what: "WhatsApp worker for the club", metric: "Messages answered" },
 ];
 
 /** Results. Sections: 13_sections/07_results */
@@ -18,7 +18,7 @@ export default function ResultsPage() {
         index="Observation log"
         eyebrow="Results"
         title="What the stars did."
-        lead="Every agent is measured. These are the numbers, with each client's permission."
+        lead="Every worker is measured. These are the numbers, with each client's permission."
         pending="Copy: 07_content/Page — Results."
       />
       <section className="section wrap space-y-10 pt-20">

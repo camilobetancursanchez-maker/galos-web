@@ -6,7 +6,7 @@ import { Pending } from "@/components/ui/Pending";
 
 /**
  * Watch it work: the constellation draws itself one step at a time, the step lights up next to it.
- * Plays on its own while on screen; tap a step to jump. Section: 13_sections/03_agent-page/02_watch-it-work
+ * Plays on its own while on screen; tap a step to jump. Section: 13_sections/03_worker-page/02_watch-it-work
  */
 export function WatchItWork({ agent }: { agent: Agent }) {
   const steps = agent.steps.list;
@@ -61,7 +61,7 @@ export function WatchItWork({ agent }: { agent: Agent }) {
               <line
                 key={i}
                 x1={x1} y1={y1} x2={x2} y2={y2}
-                stroke="#0b0b0b"
+                stroke="var(--color-ink)"
                 strokeWidth={0.4}
                 strokeLinecap="round"
                 strokeDasharray={len}
@@ -72,8 +72,8 @@ export function WatchItWork({ agent }: { agent: Agent }) {
           })}
           {agent.stars.map(([x, y, m = 1], i) => (
             <g key={i}>
-              <circle cx={x} cy={y} r={m === 3 ? 2 : m === 2 ? 1.5 : 1.1} fill={lit.has(i) ? "#0b0b0b" : "#d1d1d6"} style={{ transition: "fill 500ms" }} />
-              {lit.has(i) && <circle cx={x} cy={y} r={5} fill="none" stroke="#0b0b0b" strokeWidth={0.5} vectorEffect="non-scaling-stroke" className="beat-ring" style={{ transformOrigin: `${x}px ${y}px` }} />}
+              <circle cx={x} cy={y} r={m === 3 ? 2 : m === 2 ? 1.5 : 1.1} fill={lit.has(i) ? "var(--color-ink)" : "var(--color-line-strong)"} style={{ transition: "fill 500ms" }} />
+              {lit.has(i) && <circle cx={x} cy={y} r={5} fill="none" stroke="var(--color-ink)" strokeWidth={0.5} vectorEffect="non-scaling-stroke" className="beat-ring" style={{ transformOrigin: `${x}px ${y}px` }} />}
             </g>
           ))}
         </svg>

@@ -14,7 +14,7 @@ export function Footer() {
             <GalosStar className="h-5 w-5" />
             <span className="text-[22px] font-bold tracking-[-0.03em]">Galos</span>
           </Link>
-          <p className="mt-4 max-w-xs text-[15px] text-muted">A gallery of AI agents. Art meets systems.</p>
+          <p className="mt-4 max-w-xs text-[15px] text-muted">A team of AI workers for your business. Art meets systems.</p>
           <p className="label mt-6 flex items-center gap-2 !text-ink">
             <span className="h-1.5 w-1.5 rounded-full bg-ink" /> {site.disclosure}
           </p>
@@ -24,7 +24,7 @@ export function Footer() {
           <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-[15px]">
             {agents.map((a) => (
               <li key={a.slug}>
-                <Link href={`/agents/${a.slug}`} className="group flex items-baseline gap-2 hover:text-ink">
+                <Link href={`/workers/${a.slug}`} className="group flex items-baseline gap-2 hover:text-ink">
                   <span className="num w-7 text-[11px] text-faint">{a.catalog.slice(-3)}</span>
                   <span className="text-muted transition-colors group-hover:text-ink">{a.figure}</span>
                 </Link>
@@ -36,7 +36,7 @@ export function Footer() {
           <div>
             <p className="label">Pages</p>
             <ul className="mt-4 space-y-2 text-[15px] text-muted">
-              {[...site.nav, { href: "/teams", label: "Teams" }, { href: "/legal", label: "Legal" }].map((l) => (
+              {site.footerLinks.map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="hover:text-ink">{l.label}</Link>
                 </li>

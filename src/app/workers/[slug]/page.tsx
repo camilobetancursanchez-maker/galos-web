@@ -14,14 +14,14 @@ export function generateStaticParams() {
   return agents.map((a) => ({ slug: a.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps<"/agents/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/workers/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const a = getAgent(slug);
   return a ? { title: `${a.figure}, ${a.role}`, description: a.does } : {};
 }
 
-/** Agent page (one template, every agent). Sections: 13_sections/03_agent-page */
-export default async function AgentPage({ params }: PageProps<"/agents/[slug]">) {
+/** Worker page (one template, every worker). Sections: 13_sections/03_worker-page */
+export default async function AgentPage({ params }: PageProps<"/workers/[slug]">) {
   const { slug } = await params;
   const agent = getAgent(slug);
   if (!agent) notFound();
@@ -34,7 +34,7 @@ export default async function AgentPage({ params }: PageProps<"/agents/[slug]">)
       {/* 01 · Statue + wall label */}
       <section className="wrap pt-28 md:pt-36">
         <nav className="label flex items-center gap-2" aria-label="Breadcrumb">
-          <Link href="/agents" className="hover:text-ink">The Collection</Link>
+          <Link href="/workers" className="hover:text-ink">Workers</Link>
           <span>/</span>
           <span className="!text-ink">{agent.catalog}</span>
         </nav>
@@ -70,7 +70,7 @@ export default async function AgentPage({ params }: PageProps<"/agents/[slug]">)
           </div>
           <span className="flex items-center gap-3">
             <span className="btn btn-line pointer-events-none opacity-40">Coming soon</span>
-            <Pending note="Try me demo: later, one agent at a time (13_sections/03_agent-page/03_try-me)." align="right" />
+            <Pending note="Try me demo: later, one worker at a time (13_sections/03_worker-page/03_try-me)." align="right" />
           </span>
         </div>
       </section>
@@ -86,7 +86,7 @@ export default async function AgentPage({ params }: PageProps<"/agents/[slug]">)
             { t: "Hire", price: agent.price.hire, rows: ["Galos sets it up", "Galos runs it", "Monthly report", "Cancel any month"], ink: true },
             { t: "Buy", price: agent.price.buy, rows: ["Galos sets it up", "You run it", "Hand-over session", "Yours to keep"], ink: false },
           ].map((o, k) => (
-            <div key={o.t} className={`reveal rounded-[28px] p-8 md:p-10 ${o.ink ? "bg-ink text-white" : "bg-white shadow-[inset_0_0_0_1px_#e5e5ea]"}`} data-delay={k}>
+            <div key={o.t} className={`reveal rounded-[28px] p-8 md:p-10 ${o.ink ? "bg-ink text-white" : "bg-white shadow-[inset_0_0_0_1px_var(--color-line)]"}`} data-delay={k}>
               <p className={`label ${o.ink ? "!text-white/60" : ""}`}>{o.t}</p>
               <p className="num mt-4 text-[56px] font-bold leading-none tracking-[-0.04em]">{o.price}</p>
               <ul className={`mt-8 space-y-3 border-t pt-6 text-[17px] ${o.ink ? "border-white/15" : "border-line"}`}>
@@ -130,10 +130,10 @@ export default async function AgentPage({ params }: PageProps<"/agents/[slug]">)
         <div className="reveal md:col-span-5">
           <p className="label eyebrow !text-ink">Measured on</p>
           <p className="h3 mt-6">{agent.measuredOn}</p>
-          <p className="mt-6 text-muted">Proof for {agent.figure} <Pending note="Client + number for this agent: agent note → Proof (08_proof)." /></p>
+          <p className="mt-6 text-muted">Proof for {agent.figure} <Pending note="Client + number for this worker: worker note → Proof (08_proof)." /></p>
         </div>
         <div className="reveal md:col-span-7" data-delay="1">
-          <p className="label eyebrow !text-ink">Questions <Pending note="FAQ: agent note → FAQ." /></p>
+          <p className="label eyebrow !text-ink">Questions <Pending note="FAQ: worker note → FAQ." /></p>
           <div className="mt-6 border-t border-line">
             {["Is it a real person?", "What do I need to have ready?", "Can I change what it says?", "What if it doesn't work for my business?"].map((q) => (
               <details key={q} className="group border-b border-line py-5">
@@ -142,7 +142,7 @@ export default async function AgentPage({ params }: PageProps<"/agents/[slug]">)
                   <span className="text-muted transition-transform duration-300 group-open:rotate-45">+</span>
                 </summary>
                 <p className="mt-3 text-muted">
-                  {q.startsWith("Is it") ? `No. ${agent.figure} is an AI agent, run by Galos. It always says so.` : "Answer pending."}
+                  {q.startsWith("Is it") ? `No. ${agent.figure} is an AI worker, run by Galos. It always says so.` : "Answer pending."}
                 </p>
               </details>
             ))}
@@ -151,9 +151,9 @@ export default async function AgentPage({ params }: PageProps<"/agents/[slug]">)
       </section>
 
       {/* The next stars */}
-      <nav className="wrap grid grid-cols-2 gap-4 border-t border-line pt-10" aria-label="More agents">
+      <nav className="wrap grid grid-cols-2 gap-4 border-t border-line pt-10" aria-label="More workers">
         {[prev, next].map((a, k) => (
-          <Link key={a.slug} href={`/agents/${a.slug}`} className={`group flex items-center gap-4 ${k ? "flex-row-reverse text-right" : ""}`}>
+          <Link key={a.slug} href={`/workers/${a.slug}`} className={`group flex items-center gap-4 ${k ? "flex-row-reverse text-right" : ""}`}>
             <Constellation agent={a} starScale={2.4} className="in h-14 w-14 shrink-0 text-ink transition-transform duration-500 group-hover:scale-110" />
             <span>
               <span className="label block">{k ? "Next" : "Previous"} · {a.catalog}</span>

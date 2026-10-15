@@ -7,7 +7,7 @@ import { WallLabel } from "@/components/ui/WallLabel";
 export function AgentCard({ agent, src, delay = 0 }: { agent: Agent; src?: string; delay?: number }) {
   return (
     <article className="reveal group" data-delay={delay}>
-      <Link href={`/agents/${agent.slug}`} className="block">
+      <Link href={`/workers/${agent.slug}`} className="block">
         <div className="transition-transform duration-700 [transition-timing-function:var(--ease-slow)] group-hover:-translate-y-1.5">
           <StatueFrame agent={agent} src={src} />
         </div>

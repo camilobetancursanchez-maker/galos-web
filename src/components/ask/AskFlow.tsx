@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { getAgent } from "@/content/agents";
+import { agents, getAgent, wings, type Wing } from "@/content/agents";
 import { askQuestions, home, site } from "@/content/site";
 import { GalosStar } from "@/components/sky/GalosStar";
 import { Constellation } from "@/components/sky/Constellation";
@@ -16,19 +16,9 @@ import { Pending } from "@/components/ui/Pending";
  * Sections: 13_sections/04_ask-galos
  */
 
-const PAIN_TO_AGENTS: Record<string, string[]> = {
-  "I don't get enough leads": ["artemis", "argus", "calliope"],
-  "I lose leads": ["nike", "mnemosyne", "hermes"],
-  "Too many messages": ["hermes", "athena"],
-  "No website": ["daedalus", "pygmalion"],
-};
-const PAIN_TO_LEAKS: Record<string, string[]> = {
-  "I don't get enough leads": ["Get leads"],
-  "I lose leads": ["Follow up", "Organize"],
-  "Too many messages": ["Answer"],
-  "No website": ["Get leads"],
-};
-const STAGES = ["Get leads", "Answer", "Follow up", "Organize", "Close", "Reviews"];
+// Each wing problem marks that wing as a leak and recommends that wing's workers.
+const PROBLEM_TO_WING = Object.fromEntries(wings.map((w) => [w.problem, w.name])) as Record<string, Wing>;
+const STAGES = wings.map((w) => w.name);
 
 type Answers = Record<string, string[]>;
 
@@ -36,7 +26,7 @@ export function AskFlow() {
   const params = useSearchParams();
   const mode = params.get("mode") === "speak" ? "speak" : "chat";
   const initialPain = params.get("pain") ?? "";
-  const known = home.ask.answers.map((a) => a.label);
+  const known = [...wings.map((w) => w.problem), home.ask.other];
 
   const [speak, setSpeak] = useState(mode === "speak");
   const [i, setI] = useState(0);
@@ -113,11 +103,11 @@ function Diagnosis({ answers, notes, onRestart }: { answers: Answers; notes: Rec
   const pains = useMemo(() => answers.pain ?? [], [answers.pain]);
   const slow = (answers.speed ?? []).some((s) => /hours|next day/.test(s));
   const recs = useMemo(() => {
-    const list = pains.flatMap((p) => PAIN_TO_AGENTS[p] ?? []);
+    const list = pains.flatMap((p) => agents.filter((a) => a.wing === PROBLEM_TO_WING[p]).map((a) => a.slug));
     if (slow) list.unshift("hermes");
     return [...new Set(list)].slice(0, 3).map((s) => getAgent(s)!);
   }, [pains, slow]);
-  const leaks = new Set(pains.flatMap((p) => PAIN_TO_LEAKS[p] ?? []));
+  const leaks = new Set<string>(pains.map((p) => PROBLEM_TO_WING[p]).filter(Boolean));
   if (slow) leaks.add("Answer");
   const [send, setSend] = useState(false);
   const type = answers.type?.[0];
@@ -137,8 +127,8 @@ function Diagnosis({ answers, notes, onRestart }: { answers: Answers; notes: Rec
       <div className="plate rise mt-14 bg-white px-4 py-10 md:px-10" style={{ animationDelay: "150ms" }}>
         <span className="mark-b" />
         <p className="label absolute left-4 top-3">The map of your business</p>
-        <ol className="relative mt-6 grid grid-cols-3 gap-y-10 md:grid-cols-6">
-          <div className="absolute left-[8%] right-[8%] top-[9px] hidden h-px bg-line-strong md:block" />
+        <ol className="relative mt-6 grid grid-cols-3 gap-y-10 md:grid-cols-5">
+          <li aria-hidden className="absolute left-[10%] right-[10%] top-[9px] hidden h-px bg-line-strong md:block" />
           {STAGES.map((s) => {
             const leak = leaks.has(s);
             return (
@@ -147,6 +137,7 @@ function Diagnosis({ answers, notes, onRestart }: { answers: Answers; notes: Rec
                   {leak && <span className="beat-ring absolute inset-0 rounded-full border border-ink" />}
                 </span>
                 <span className={`mt-4 text-[15px] ${leak ? "font-semibold" : "text-muted"}`}>{s}</span>
+                <span className="mt-0.5 hidden text-[12px] text-muted md:block">{wings.find((w) => w.name === s)?.plain}</span>
                 {leak && <span className="label mt-1 !text-ink">Leak</span>}
               </li>
             );
@@ -161,14 +152,14 @@ function Diagnosis({ answers, notes, onRestart }: { answers: Answers; notes: Rec
         {recs.length ? (
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {recs.map((a, k) => (
-              <Link key={a.slug} href={`/agents/${a.slug}`} className="rise group rounded-[24px] bg-white p-6 shadow-[inset_0_0_0_1px_#e5e5ea] transition-shadow hover:shadow-[inset_0_0_0_1px_#0b0b0b]" style={{ animationDelay: `${250 + k * 120}ms` }}>
+              <Link key={a.slug} href={`/workers/${a.slug}`} className="rise group rounded-[24px] bg-white p-6 shadow-[inset_0_0_0_1px_var(--color-line)] transition-shadow hover:shadow-[inset_0_0_0_1px_var(--color-ink)]" style={{ animationDelay: `${250 + k * 120}ms` }}>
                 <div className="flex items-start justify-between">
                   <Constellation agent={a} starScale={2} className="in h-20 w-20 text-ink" />
                   <span className="label">{a.catalog}</span>
                 </div>
                 <h2 className="h3 mt-6">{a.figure}, <span className="text-muted">{a.role}</span></h2>
                 <p className="mt-2 text-[15px] text-muted">{a.does}</p>
-                <p className="label mt-5 !text-ink">Why: {pains.find((p) => PAIN_TO_AGENTS[p]?.includes(a.slug)) ?? "you answer slowly"}</p>
+                <p className="label mt-5 !text-ink">Why: {pains.find((p) => PROBLEM_TO_WING[p] === a.wing) ?? "you answer messages slowly"}</p>
               </Link>
             ))}
           </div>
@@ -186,7 +177,7 @@ function Diagnosis({ answers, notes, onRestart }: { answers: Answers; notes: Rec
 
       {/* Three ways forward */}
       <section className="mt-12 flex flex-col gap-3 sm:flex-row">
-        <Link href={recs.length >= 3 ? "/teams" : recs[0] ? `/agents/${recs[0].slug}#hire` : site.bookingUrl} className="btn btn-ink btn-lg">
+        <Link href={recs.length >= 3 ? "/teams" : recs[0] ? `/workers/${recs[0].slug}#hire` : site.bookingUrl} className="btn btn-ink btn-lg">
           {recs.length > 1 ? "Hire this team" : recs.length ? `Hire ${recs[0].figure}` : "Book a call"}
         </Link>
         <Link href={site.bookingUrl} className="btn btn-line btn-lg">Book a call</Link>

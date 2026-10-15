@@ -8,7 +8,7 @@ import path from "node:path";
 export function figureSrc(slug: string): string | undefined {
   for (const ext of ["webp", "png", "jpg"]) {
     const file = `figure-${slug}.${ext}`;
-    if (fs.existsSync(path.join(process.cwd(), "public", "images", file))) return `/images/${file}`;
+    if (fs.existsSync(path.join(process.cwd(), "public", "images", file))) return `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/${file}`;
   }
   return undefined;
 }

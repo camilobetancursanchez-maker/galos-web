@@ -4,24 +4,24 @@ import { site } from "@/content/site";
 import { PageHead } from "@/components/ui/PageHead";
 import { Pending } from "@/components/ui/Pending";
 
-export const metadata: Metadata = { title: "Custom" };
+export const metadata: Metadata = { title: "Custom projects" };
 
 const BUILD = [
   ["Websites", "Built in code, connected to your CRM. Like Finaro."],
   ["Apps", "Tools made for one business: portals, trackers, internal apps."],
   ["Brands", "Logo, brand kit and the visual system around it."],
-  ["Automations", "The complex flows that don't fit one agent."],
+  ["Automations", "The complex flows that don't fit one worker."],
 ];
 const WORK = ["Finaro", "Crambol", "Zalina", "Yuki"];
 
-/** Custom ("Commission a piece"). Sections: 13_sections/06_custom */
+/** Custom projects. Sections: 13_sections/06_custom · copy: 07_content/Page — Custom */
 export default function CustomPage() {
   return (
     <>
       <PageHead
         index="Cat. GLS-0??"
-        eyebrow="Custom"
-        title="Commission your own star."
+        eyebrow="Custom projects"
+        title="Don't see your problem? We build it."
         lead="Some businesses need a piece that isn't in the Collection. We make it for you, from the first sketch to the day it goes live."
         pending="Copy: 07_content/Page — Custom."
       />

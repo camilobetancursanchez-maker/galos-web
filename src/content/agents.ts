@@ -2,7 +2,7 @@
  * The Galos Collection: every agent, its constellation and its wall label.
  * ─────────────────────────────────────────────
  * Source of truth for the text: the vault, Projects/Galos/Website/03_collection/
- * (one note per agent). When a field has `pending`, the site shows a PENDING tag
+ * (one note per worker). On the site they're called "workers"; in code, agents. When a field has `pending`, the site shows a PENDING tag
  * with that note. Replace the text when Camilo confirms it and delete `pending`.
  *
  * The constellation is the agent's process: each star is a step of the work,
@@ -10,9 +10,17 @@
  * Star coordinates live in a 0–100 box.
  */
 
-export type JobArea = "Get leads" | "Answer" | "Follow up" | "Organize" | "Grow" | "Run the day" | "Build";
+/** The 5 wings = the client journey (vault: 00 Galos — Explained Simply, section 4). */
+export type Wing = "Attract" | "Answer" | "Convert" | "Deliver" | "Keep";
 
-export const jobAreas: JobArea[] = ["Get leads", "Answer", "Follow up", "Organize", "Grow", "Run the day", "Build"];
+// `name` is the key (used in links: /workers?wing=Attract); `label` is what the page shows.
+export const wings: { name: Wing; label: string; plain: string; problem: string; leader: string }[] = [
+  { name: "Attract", label: "Attract", plain: "Get leads", problem: "Not enough people know about me.", leader: "Apollo" },
+  { name: "Answer", label: "Answer", plain: "Customer support", problem: "I miss messages and people go cold.", leader: "Hestia" },
+  { name: "Convert", label: "Convert", plain: "Turn the people asking into paying clients", problem: "People ask but don't buy.", leader: "Odysseus" },
+  { name: "Deliver", label: "Deliver", plain: "Deliver a great result", problem: "My customers don't get the best experience.", leader: "Hephaestus" },
+  { name: "Keep", label: "Keep", plain: "Loyalty: they buy again and stay", problem: "They buy once and never come back.", leader: "Hera" },
+];
 
 export type Star = [x: number, y: number, magnitude?: number];
 export type Edge = [from: number, to: number];
@@ -23,7 +31,7 @@ export type Agent = {
   figure: string; // Hermes
   role: string; // the Receptionist
   meaning: string; // why this figure
-  area: JobArea;
+  wing: Wing;
   does: string; // one line for the wall label
   measuredOn: string;
   channels: string;
@@ -37,8 +45,8 @@ export type Agent = {
 };
 
 const PRICE = { hire: "$___/mo", buy: "$___", pending: "Prices come from 05_offer (after $100M Offers)." };
-const LIVE = { text: "Live in __ days", pending: "Days to go live: fill in the agent note in 03_collection." };
-const STEPS_PENDING = "Example steps written by Claude: confirm them in the agent note (Watch it work).";
+const LIVE = { text: "Live in __ days", pending: "Days to go live: fill in the worker note in 03_collection." };
+const STEPS_PENDING = "Example steps written by Claude: confirm them in the worker note (Watch it work).";
 
 export const agents: Agent[] = [
   {
@@ -47,7 +55,7 @@ export const agents: Agent[] = [
     figure: "Hermes",
     role: "the Receptionist",
     meaning: "The messenger. Carries every message, fast.",
-    area: "Answer",
+    wing: "Answer",
     does: "Answers every message 24/7, answers FAQs and books the appointment in the chat.",
     measuredOn: "Response time · % answered · appointments booked",
     channels: "WhatsApp · Instagram · web chat",
@@ -69,7 +77,7 @@ export const agents: Agent[] = [
     figure: "Artemis",
     role: "the Hunter",
     meaning: "The huntress. Finds and tracks the right prospects.",
-    area: "Get leads",
+    wing: "Attract",
     does: "Finds businesses or people that fit, scores them and writes a personal first message.",
     measuredOn: "Qualified leads/week · replies · meetings booked",
     channels: "Email · WhatsApp · LinkedIn",
@@ -91,7 +99,7 @@ export const agents: Agent[] = [
     figure: "Nike",
     role: "the Closer",
     meaning: "Victory. Closes, and wins back the lead.",
-    area: "Follow up",
+    wing: "Convert",
     does: "Follows up with every lead that didn't buy and wakes up the old customer list.",
     measuredOn: "Leads reactivated · sales recovered",
     channels: "WhatsApp · email",
@@ -113,7 +121,7 @@ export const agents: Agent[] = [
     figure: "Mnemosyne",
     role: "the CRM Manager",
     meaning: "Memory. Remembers every lead and every detail.",
-    area: "Organize",
+    wing: "Deliver",
     does: "Puts every lead in one pipeline, cleans the data, tags it and sends the weekly numbers.",
     measuredOn: "% of leads tracked · weekly report delivered",
     channels: "CRM · WhatsApp · forms",
@@ -135,7 +143,7 @@ export const agents: Agent[] = [
     figure: "Pheme",
     role: "the Reputation Manager",
     meaning: "Fame. Spreads the good word.",
-    area: "Grow",
+    wing: "Keep",
     does: "Asks for Google reviews and referrals after every service.",
     measuredOn: "New reviews/month · rating · referrals",
     channels: "WhatsApp · email · Google",
@@ -157,7 +165,7 @@ export const agents: Agent[] = [
     figure: "Argus",
     role: "the Ads Manager",
     meaning: "The giant with a hundred eyes. Watches every campaign and number.",
-    area: "Get leads",
+    wing: "Attract",
     does: "Builds and runs Meta campaigns and tests the creatives.",
     measuredOn: "Cost per lead · leads/month",
     channels: "Facebook · Instagram",
@@ -179,7 +187,7 @@ export const agents: Agent[] = [
     figure: "Calliope",
     role: "the Content Creator",
     meaning: "The muse of eloquence. Turns the work into stories.",
-    area: "Get leads",
+    wing: "Attract",
     does: "Turns the business's work into posts and short videos.",
     measuredOn: "Posts/week · reach · DMs from content",
     channels: "Instagram · TikTok · Facebook",
@@ -201,7 +209,7 @@ export const agents: Agent[] = [
     figure: "Athena",
     role: "the Assistant",
     meaning: "Wisdom and craft. Keeps the owner's day organized and smart.",
-    area: "Run the day",
+    wing: "Deliver",
     does: "Handles the owner's inbox, calendar, quotes and reminders.",
     measuredOn: "Hours saved/week",
     channels: "Email · calendar · WhatsApp",
@@ -223,7 +231,7 @@ export const agents: Agent[] = [
     figure: "Pygmalion",
     role: "the Designer",
     meaning: "The sculptor. Gives form to the brand.",
-    area: "Build",
+    wing: "Attract",
     does: "Logo, brand kit and ad creatives.",
     measuredOn: "Delivered on time · approval rounds",
     channels: "Brand files · ads",
@@ -245,7 +253,7 @@ export const agents: Agent[] = [
     figure: "Daedalus",
     role: "the Web Specialist",
     meaning: "The architect. Builds the place where clients arrive.",
-    area: "Build",
+    wing: "Attract",
     does: "A landing page or website connected to the CRM.",
     measuredOn: "Page conversion rate · leads from the page",
     channels: "Web",

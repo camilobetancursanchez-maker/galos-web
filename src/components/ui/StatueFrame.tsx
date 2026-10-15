@@ -28,13 +28,13 @@ export function StatueFrame({
         ) : (
           <>
             {/* museum light from above */}
-            <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,#ffffff_0%,rgba(255,255,255,0)_100%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,var(--color-glow)_0%,transparent_100%)]" />
             <div className="absolute inset-x-[18%] top-[14%] bottom-[30%] text-ink/80">
               <Constellation agent={agent} className="h-full w-full" starScale={size === "lg" ? 1.3 : 1} />
             </div>
             {/* plinth */}
             <svg viewBox="0 0 100 40" className="absolute inset-x-[22%] bottom-[8%] w-[56%]" aria-hidden>
-              <g fill="#fff" stroke="#d1d1d6" strokeWidth={1} vectorEffect="non-scaling-stroke">
+              <g fill="var(--color-white)" stroke="var(--color-line-strong)" strokeWidth={1} vectorEffect="non-scaling-stroke">
                 <rect x={22} y={1} width={56} height={4} />
                 <rect x={28} y={5} width={44} height={26} />
                 <rect x={18} y={31} width={64} height={4} />

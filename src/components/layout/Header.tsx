@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
 import { GalosStar } from "@/components/sky/GalosStar";
+import { ThemeToggle } from "./ThemeToggle";
 
 /** Section: 13_sections/00_every-page/01_header-nav */
 export function Header() {
@@ -31,7 +32,7 @@ export function Header() {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow,backdrop-filter] duration-300 ${
-          scrolled || open ? "bg-white/75 shadow-[0_1px_0_#e5e5ea] backdrop-blur-xl" : ""
+          scrolled || open ? "bg-white/75 shadow-[0_1px_0_var(--color-line)] backdrop-blur-xl" : ""
         }`}
       >
         <div className="wrap flex h-16 items-center justify-between gap-6">
@@ -55,8 +56,9 @@ export function Header() {
             })}
           </nav>
           <div className="flex items-center gap-2">
-            <Link href={site.bookingUrl} className="btn btn-line hidden !h-10 !px-4 !text-[15px] md:inline-flex">
-              Book a call
+            <ThemeToggle />
+            <Link href="/ask" className="btn btn-line hidden !h-10 !px-4 !text-[15px] md:inline-flex">
+              <GalosStar className="h-3.5 w-3.5" /> Ask Galos
             </Link>
             <button
               type="button"
@@ -85,6 +87,7 @@ export function Header() {
               key={l.href}
               href={l.href}
               tabIndex={open ? 0 : -1}
+              onClick={() => setOpen(false)}
               className="flex items-baseline justify-between border-b border-line py-5 text-[34px] font-bold tracking-[-0.03em]"
               style={{ transition: "transform 600ms var(--ease-slow)", transform: open ? "none" : `translateY(${12 + i * 6}px)` }}
             >
@@ -92,8 +95,12 @@ export function Header() {
               <span className="label">0{i + 1}</span>
             </Link>
           ))}
-          <Link href={site.bookingUrl} tabIndex={open ? 0 : -1} className="btn btn-ink btn-lg mt-auto w-full">
-            Book a call
+          <div className="mt-6 flex gap-5 text-[17px] text-muted">
+            <Link href="/about" tabIndex={open ? 0 : -1} onClick={() => setOpen(false)}>About</Link>
+            <Link href="/custom" tabIndex={open ? 0 : -1} onClick={() => setOpen(false)}>Custom projects</Link>
+          </div>
+          <Link href="/ask" tabIndex={open ? 0 : -1} onClick={() => setOpen(false)} className="btn btn-ink btn-lg mt-auto w-full">
+            <GalosStar className="h-4 w-4" /> Ask Galos
           </Link>
         </nav>
       </div>

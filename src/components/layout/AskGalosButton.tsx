@@ -39,7 +39,7 @@ export function AskGalosButton() {
       <div
         role="dialog"
         aria-label="Ask Galos"
-        className={`absolute bottom-[76px] right-0 w-[min(300px,calc(100vw-40px))] origin-bottom-right rounded-[24px] bg-white p-2 shadow-[0_0_0_1px_#e5e5ea,0_24px_60px_-20px_rgba(0,0,0,0.25)] transition-[opacity,transform] duration-300 ${
+        className={`absolute bottom-[76px] right-0 w-[min(300px,calc(100vw-40px))] origin-bottom-right rounded-[24px] bg-white p-2 shadow-[0_0_0_1px_var(--color-line),0_24px_60px_-20px_rgba(0,0,0,0.25)] transition-[opacity,transform] duration-300 ${
           open ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
         }`}
       >

@@ -3,9 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { home } from "@/content/site";
+import { wings } from "@/content/agents";
 import { GalosStar } from "@/components/sky/GalosStar";
 
-/** 02 · Ask Galos prompt — one question on one wall. Section: 13_sections/01_home/02_ask-galos-prompt */
+/** 04 · Ask Galos prompt — one question on one wall. The tap answers are the 5 wing problems. Section: 13_sections/01_home/04_ask-galos-prompt */
 export function AskPrompt() {
   const router = useRouter();
   const [text, setText] = useState("");
@@ -22,7 +23,7 @@ export function AskPrompt() {
           </div>
           <h2 className="h2 mt-10">{ask.question}</h2>
           <form
-            className="mx-auto mt-12 flex max-w-2xl items-center gap-2 rounded-full bg-white p-2 shadow-[inset_0_0_0_1px_#d1d1d6] focus-within:shadow-[inset_0_0_0_1px_#0b0b0b]"
+            className="mx-auto mt-12 flex max-w-2xl items-center gap-2 rounded-full bg-white p-2 shadow-[inset_0_0_0_1px_var(--color-line-strong)] focus-within:shadow-[inset_0_0_0_1px_var(--color-ink)]"
             onSubmit={(e) => {
               e.preventDefault();
               if (text.trim()) go(text.trim());
@@ -42,9 +43,9 @@ export function AskPrompt() {
           </form>
           <p className="label mt-8">or pick one</p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {ask.answers.map((a) => (
-              <button key={a.id} type="button" className="chip" onClick={() => go(a.label)}>
-                {a.label}
+            {[...wings.map((w) => w.problem), ask.other].map((label) => (
+              <button key={label} type="button" className="chip" onClick={() => go(label)}>
+                {label}
               </button>
             ))}
           </div>

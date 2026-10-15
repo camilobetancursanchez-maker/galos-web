@@ -5,13 +5,13 @@ import { GalosStar } from "@/components/sky/GalosStar";
 
 export const metadata: Metadata = { title: "About" };
 
-/** About (the studio). Sections: 13_sections/08_about */
+/** About (the studio). Sections: 13_sections/08_about (never call Galos "the studio": Galos Studio is the client login) */
 export default function AboutPage() {
   return (
     <>
-      <PageHead index="The studio" eyebrow="About" title="Art meets systems." />
+      <PageHead index="Galos" eyebrow="About" title="Art meets systems." />
 
-      {/* 01 · Camilo + the studio */}
+      {/* 01 · Camilo */}
       <section className="section wrap grid gap-12 pt-20 md:grid-cols-12">
         <figure className="md:col-span-5">
           <div className="plate reveal aspect-[4/5] bg-wash">
@@ -20,8 +20,8 @@ export default function AboutPage() {
           </div>
         </figure>
         <div className="reveal md:col-span-6 md:col-start-7 md:pt-10" data-delay="1">
-          <p className="label eyebrow !text-ink">The studio</p>
-          <p className="h3 mt-6">Galos is a studio of one designer and a collection of AI agents.</p>
+          <p className="label eyebrow !text-ink">Who builds Galos</p>
+          <p className="h3 mt-6">One designer and a team of AI workers.</p>
           <p className="mt-6 text-[19px] text-muted">
             An industrial designer who builds software. The machine is complicated; what you touch is simple. <Pending note="Camilo's story in his words (a voice note is fine)." />
           </p>

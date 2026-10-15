@@ -1,7 +1,7 @@
 import { home } from "@/content/site";
 import { Pending } from "@/components/ui/Pending";
 
-/** 05 · Proof — an observation log. Numbers only when real. Section: 13_sections/01_home/05_proof */
+/** 08 · Proof — an observation log. Numbers only when real. Section: 13_sections/01_home/08_proof */
 export function Proof() {
   const { proof } = home;
   return (

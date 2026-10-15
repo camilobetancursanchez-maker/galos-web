@@ -24,7 +24,7 @@ export function Pending({ note, className = "", align = "left" }: { note?: strin
           setOpen((v) => !v);
         }}
         onBlur={() => setOpen(false)}
-        className="inline-flex cursor-help items-center gap-1.5 rounded-full bg-white px-2 py-[3px] font-sans text-[10px] font-semibold uppercase leading-none tracking-[0.12em] text-ink shadow-[inset_0_0_0_1px_#0b0b0b]"
+        className="inline-flex cursor-help items-center gap-1.5 rounded-full bg-white px-2 py-[3px] font-sans text-[10px] font-semibold uppercase leading-none tracking-[0.12em] text-ink shadow-[inset_0_0_0_1px_var(--color-ink)]"
       >
         <span className="h-1 w-1 rounded-full bg-ink" />
         Pending

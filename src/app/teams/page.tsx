@@ -15,7 +15,7 @@ export default function TeamsPage() {
         index="Exhibitions"
         eyebrow="Teams"
         title="Stars work better together."
-        lead="A team is a few agents joined into one constellation. Hiring the team costs less than hiring them one by one."
+        lead="A team is a few workers joined into one constellation. Hiring the team costs less than hiring them one by one."
         pending="Copy: 07_content/Page — Teams."
       />
       <div className="section wrap space-y-20 pt-20">
@@ -26,7 +26,7 @@ export default function TeamsPage() {
               <span className="mark-b" />
               <div className="label flex justify-between">
                 <span>Room {String(k + 1).padStart(2, "0")}</span>
-                <span>{members.length} agents</span>
+                <span>{members.length} workers</span>
               </div>
               <div className="mt-8 grid gap-10 md:grid-cols-12 md:items-end">
                 <div className="md:col-span-5">
@@ -40,7 +40,7 @@ export default function TeamsPage() {
                 <div className="relative grid gap-2 md:col-span-7" style={{ gridTemplateColumns: `repeat(${members.length}, minmax(0, 1fr))` }} data-reveal>
                   <div className="absolute left-6 right-6 top-1/2 border-t border-dashed border-line-strong" />
                   {members.map((a, i) => (
-                    <Link key={a.slug} href={`/agents/${a.slug}`} className="group relative flex min-w-0 flex-col items-center text-center">
+                    <Link key={a.slug} href={`/workers/${a.slug}`} className="group relative flex min-w-0 flex-col items-center text-center">
                       <Constellation agent={a} delay={i * 200} starScale={1.8} className="aspect-square w-full max-w-24 bg-white text-ink transition-transform duration-500 group-hover:scale-110" />
                       <span className="mt-3 w-full truncate text-[13px] font-semibold sm:text-[15px]">{a.figure}</span>
                       <span className="hidden text-[12px] text-muted sm:block">{a.role}</span>

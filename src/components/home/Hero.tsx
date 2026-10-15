@@ -29,12 +29,12 @@ export function Hero() {
 
   const { hero } = home;
   return (
-    <section className="relative h-[100svh] min-h-[640px] overflow-hidden bg-white">
+    <section className="relative h-[100svh] min-h-[640px] overflow-hidden bg-sky">
       <div className="absolute inset-0">
         <Starfield mode="lattice" seed={21} />
       </div>
       {/* soft white center so the words always read */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(42%_34%_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.75)_55%,rgba(255,255,255,0)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(42%_34%_at_50%_50%,color-mix(in_srgb,var(--color-sky)_96%,transparent)_0%,color-mix(in_srgb,var(--color-sky)_75%,transparent)_55%,transparent_100%)]" />
 
       {/* the chart frame */}
       <div className="pointer-events-none absolute inset-3 top-[72px] md:inset-6 md:top-20">
@@ -53,7 +53,7 @@ export function Hero() {
         <p className="label eyebrow rise !text-ink" style={{ animationDelay: "900ms" }}>
           {hero.eyebrow}
         </p>
-        <h1 className="display rise mt-6 max-w-[11ch]" style={{ animationDelay: "1100ms" }}>
+        <h1 className="display rise mt-6 max-w-[13ch]" style={{ animationDelay: "1100ms" }}>
           {hero.title.text}
         </h1>
         <p className="lead rise mx-auto mt-6 max-w-[34em]" style={{ animationDelay: "1300ms" }}>
@@ -61,7 +61,7 @@ export function Hero() {
         </p>
         <div className="rise mt-10 flex flex-col items-center gap-3 sm:flex-row" style={{ animationDelay: "1500ms" }}>
           <Link href="/ask" className="btn btn-ink btn-lg">Ask Galos what I need</Link>
-          <Link href="/agents" className="btn btn-line btn-lg">See the Collection</Link>
+          <Link href="/workers" className="btn btn-line btn-lg">See the workers</Link>
         </div>
       </div>
 
