@@ -10,6 +10,8 @@ import { useLang } from "@/lib/useLang";
 import { GalosStar } from "@/components/sky/GalosStar";
 import { Constellation } from "@/components/sky/Constellation";
 import { Pending } from "@/components/ui/Pending";
+import { Step } from "./Step";
+import { SystemFlow } from "./SystemFlow";
 
 /**
  * Ask Galos (/ask): one question per screen, then the Diagnosis.
@@ -34,6 +36,7 @@ export function AskFlow() {
   const known = [...wings.map((w) => w.problem), home.ask.other];
 
   const [speak, setSpeak] = useState(mode === "speak");
+  const [system, setSystem] = useState(params.get("flow") === "system");
   const [i, setI] = useState(0);
   const [answers, setAnswers] = useState<Answers>((): Answers =>
     initialPain ? { pain: [known.includes(initialPain) ? initialPain : home.ask.other] } : {},
@@ -42,7 +45,8 @@ export function AskFlow() {
   const done = i >= askQuestions.length;
 
   if (speak) return <Speak c={c} onChat={() => setSpeak(false)} />;
-  if (done) return <Diagnosis lang={lang} c={c} answers={answers} notes={notes} onRestart={() => setI(0)} />;
+  if (system) return <SystemFlow lang={lang} c={c} />;
+  if (done) return <Diagnosis lang={lang} c={c} answers={answers} notes={notes} onRestart={() => setI(0)} onSystem={() => { setSystem(true); window.scrollTo(0, 0); }} />;
 
   const q = askQuestions[i];
   const picked = answers[q.id] ?? [];
@@ -54,57 +58,22 @@ export function AskFlow() {
     });
 
   return (
-    <div className="mx-auto flex min-h-[calc(100svh-64px)] max-w-3xl flex-col px-4 pb-10 pt-28 md:pt-36">
-      {/* progress: six stars */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2" aria-label={t.progress(i + 1, askQuestions.length)}>
-          {askQuestions.map((x, k) => (
-            <span key={x.id} className={`h-1.5 rounded-full transition-all duration-500 ${k < i ? "w-1.5 bg-ink" : k === i ? "w-6 bg-ink" : "w-1.5 bg-line-strong"}`} />
-          ))}
-        </div>
-        <span className="label num">{String(i + 1).padStart(2, "0")} / 0{askQuestions.length}</span>
-      </div>
-
-      <div key={q.id} className="rise mt-16 flex-1">
-        <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white">
-            <GalosStar className="beat h-4 w-4" />
-          </span>
-          <span className="label">{t.asks}</span>
-        </div>
-        <h1 className="h1 mt-6">{q.q}</h1>
-        {q.multi && <p className="mt-3 text-muted">{t.pickAll}</p>}
-        <div className="mt-10 flex flex-wrap gap-2">
-          {q.options.map((o) => (
-            <button key={o} type="button" className="chip !h-12 !px-5 !text-[17px]" aria-pressed={picked.includes(o)} onClick={() => toggle(o)}>
-              {o}
-            </button>
-          ))}
-        </div>
-        <label className="mt-8 block">
-          <span className="sr-only">{t.own}</span>
-          <input
-            value={notes[q.id] ?? ""}
-            onChange={(e) => setNotes((n) => ({ ...n, [q.id]: e.target.value }))}
-            placeholder={t.own}
-            className="h-12 w-full border-b border-line-strong bg-transparent text-[17px] outline-none transition-colors placeholder:text-faint focus:border-ink"
-          />
-        </label>
-      </div>
-
-      <div className="mt-12 flex items-center justify-between">
-        <button type="button" onClick={() => setI((v) => Math.max(v - 1, 0))} className={`text-[15px] text-muted hover:text-ink ${i === 0 ? "invisible" : ""}`}>
-          {t.back}
-        </button>
-        <button type="button" className="btn btn-ink btn-lg" onClick={() => setI((v) => v + 1)} disabled={!picked.length && !notes[q.id]}>
-          {i === askQuestions.length - 1 ? t.see : t.next}
-        </button>
-      </div>
-    </div>
+    <Step
+      c={c}
+      questions={askQuestions}
+      i={i}
+      picked={picked}
+      note={notes[q.id] ?? ""}
+      onToggle={toggle}
+      onNote={(v) => setNotes((n) => ({ ...n, [q.id]: v }))}
+      onBack={() => setI((v) => Math.max(v - 1, 0))}
+      onNext={() => setI((v) => v + 1)}
+      last={t.see}
+    />
   );
 }
 
-function Diagnosis({ lang, c, answers, notes, onRestart }: { lang: Lang; c: Copy; answers: Answers; notes: Record<string, string>; onRestart: () => void }) {
+function Diagnosis({ lang, c, answers, notes, onRestart, onSystem }: { lang: Lang; c: Copy; answers: Answers; notes: Record<string, string>; onRestart: () => void; onSystem: () => void }) {
   const { agents, askQuestions, getAgent, site, wings, wingOf } = c;
   const t = c.pages.ask;
   const PROBLEM_TO_WING = problemToWing(c);
@@ -181,6 +150,15 @@ function Diagnosis({ lang, c, answers, notes, onRestart }: { lang: Lang; c: Copy
         <p className="label">{t.estimate}</p>
         <p className="h3 mt-3">{t.estimateLine}</p>
         <p className="mt-3"><Pending note="The estimate comes when Ask Galos runs on Claude (06_ask-galos). Always 'estimate', never a guarantee." /></p>
+      </section>
+
+      {/* Custom systems: when the tools are the problem, sketch the system */}
+      <section className="mt-12 rounded-[24px] bg-ink p-8 text-white md:flex md:items-center md:justify-between md:p-10">
+        <div className="max-w-xl">
+          <p className="h3">{t.system.cta}</p>
+          <p className="mt-2 text-white/70">{t.system.ctaLine}</p>
+        </div>
+        <button type="button" onClick={onSystem} className="btn btn-lg mt-6 shrink-0 bg-white text-ink hover:bg-wash md:mt-0">{t.system.start}</button>
       </section>
 
       {/* Three ways forward */}

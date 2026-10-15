@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 /** Pricing. Section: 13_sections/11_pricing · copy: 07_content/Page — Pricing · prices: 05_offer */
 export default async function PricingPage() {
   const lang = await pageLang();
-  const { agents, teams, wings, getAgent, pricing, site, home, ui, pages } = copy(lang);
+  const { agents, teams, wings, getAgent, pricing, home, ui, pages } = copy(lang);
   const t = pages.pricing;
   return (
     <>
@@ -108,9 +108,9 @@ export default async function PricingPage() {
           <div>
             <p className="label !text-white/60">{ui.customProjects}</p>
             <h2 className="h2 mt-4">{t.customTitle}</h2>
-            <p className="mt-3 text-white/70">{t.customFrom} <Pending note="Custom projects starting price: 05_offer." /></p>
+            <p className="mt-3 text-white/70">{t.customFrom} <Pending note="Starting price $900 for now (Camilo, WED 14): confirm in 05_offer." /></p>
           </div>
-          <Link href={to(lang, site.bookingUrl)} className="btn btn-lg mt-8 bg-white text-ink hover:bg-wash md:mt-0">{ui.bookCall}</Link>
+          <Link href={to(lang, "/custom")} className="btn btn-lg mt-8 bg-white text-ink hover:bg-wash md:mt-0">{ui.custom.see}</Link>
         </div>
       </section>
     </>

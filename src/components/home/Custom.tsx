@@ -30,7 +30,7 @@ export async function Custom() {
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link href={to(lang, site.bookingUrl)} className="btn btn-lg bg-white text-ink hover:bg-wash">{ui.bookCall}</Link>
-              <Link href={to(lang, "/custom")} className="btn btn-lg text-white shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--color-white)_40%,transparent)] hover:bg-white/10">{ui.custom.past}</Link>
+              <Link href={to(lang, "/custom")} className="btn btn-lg text-white shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--color-white)_40%,transparent)] hover:bg-white/10">{ui.custom.see}</Link>
             </div>
           </div>
         </div>
