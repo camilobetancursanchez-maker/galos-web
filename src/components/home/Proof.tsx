@@ -1,8 +1,10 @@
-import { home } from "@/content/site";
+import { copy } from "@/content";
+import { pageLang } from "@/lib/lang";
 import { Pending } from "@/components/ui/Pending";
 
 /** 08 · Proof — an observation log. Numbers only when real. Section: 13_sections/01_home/08_proof */
-export function Proof() {
+export async function Proof() {
+  const { home, ui } = copy(await pageLang());
   const { proof } = home;
   return (
     <section className="section">
@@ -15,11 +17,11 @@ export function Proof() {
         </div>
         <div className="reveal mt-14 border-t border-ink" data-delay="1">
           <div className="label hidden grid-cols-12 gap-6 border-b border-line py-3 md:grid">
-            <span className="col-span-1">Obs.</span>
-            <span className="col-span-3">Client</span>
-            <span className="col-span-3">What Galos did</span>
-            <span className="col-span-3">Measured on</span>
-            <span className="col-span-2 text-right">Result</span>
+            <span className="col-span-1">{ui.proof.obs}</span>
+            <span className="col-span-3">{ui.proof.client}</span>
+            <span className="col-span-3">{ui.proof.what}</span>
+            <span className="col-span-3">{ui.proof.metric}</span>
+            <span className="col-span-2 text-right">{ui.proof.result}</span>
           </div>
           {proof.rows.map((r, i) => (
             <div key={r.client} className="grid grid-cols-2 gap-x-6 gap-y-1 border-b border-line py-6 md:grid-cols-12 md:items-baseline md:py-8">

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { agents } from "@/content/agents";
+import { copy } from "@/content";
+import { to, type Lang } from "@/lib/i18n";
 import { edgePath } from "./Constellation";
 
 /**
@@ -26,13 +27,14 @@ function backgroundStars() {
 
 const field = backgroundStars();
 
-export function SkyMap({ className = "" }: { className?: string }) {
+export function SkyMap({ lang, className = "" }: { lang: Lang; className?: string }) {
+  const { agents, ui } = copy(lang);
   return (
     <div className={`relative ${className}`}>
       <div className="-mx-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] md:mx-0 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
         <div className="plate min-w-[980px] bg-white md:min-w-0" data-reveal>
           <span className="mark-b" />
-          <svg viewBox={`0 0 ${W} ${H}`} className="skymap block w-full" role="group" aria-label="The Galos Collection as a star chart">
+          <svg viewBox={`0 0 ${W} ${H}`} className="skymap block w-full" role="group" aria-label={ui.sky.aria}>
             {/* The chart: declination arcs and hour lines, like a planisphere */}
             <g stroke="var(--color-line)" fill="none" strokeWidth={1} vectorEffect="non-scaling-stroke">
               {[900, 1150, 1400, 1650].map((r) => (
@@ -69,7 +71,7 @@ export function SkyMap({ className = "" }: { className?: string }) {
               const [x, y, size] = SLOTS[i];
               const k = size / 100;
               return (
-                <Link key={agent.slug} href={`/workers/${agent.slug}`} className="const group/c outline-none" aria-label={`${agent.figure}, ${agent.role}`}>
+                <Link key={agent.slug} href={to(lang, `/workers/${agent.slug}`)} className="const group/c outline-none" aria-label={`${agent.figure}, ${agent.role}`}>
                   <g transform={`translate(${x} ${y})`}>
                     <rect x={-16} y={-16} width={size + 32} height={size + 76} fill="transparent" />
                     <g transform={`scale(${k})`}>
@@ -103,7 +105,7 @@ export function SkyMap({ className = "" }: { className?: string }) {
           </svg>
         </div>
       </div>
-      <p className="label mt-4 md:hidden">← Drag the sky →</p>
+      <p className="label mt-4 md:hidden">{ui.sky.drag}</p>
     </div>
   );
 }

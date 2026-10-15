@@ -1,5 +1,5 @@
-import { wings } from "@/content/agents";
-import { home } from "@/content/site";
+import { copy } from "@/content";
+import { pageLang } from "@/lib/lang";
 import { Pending } from "@/components/ui/Pending";
 
 /**
@@ -11,7 +11,8 @@ const STAR = "M980 45C920 300 900 640 1260 743C1050 760 900 900 646 1275C800 100
 // Example team: who is hired in each wing (empty = grey room)
 const HIRED: Record<string, string[]> = { Attract: ["Calliope"], Answer: ["Hermes"], Convert: ["Nike"], Deliver: [], Keep: [] };
 
-export function YourStudio() {
+export async function YourStudio() {
+  const { wings, home, ui } = copy(await pageLang());
   const { studio } = home;
   const C = 300, R = 196, W = 168, H = 92;
   return (
@@ -24,19 +25,19 @@ export function YourStudio() {
             {studio.line.text} <Pending note={studio.line.pending} />
           </p>
           <ul className="mt-10 space-y-4 border-t border-line pt-6 text-[17px]">
-            <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-ink" /> Galos in the middle: ask it anything about your business.</li>
-            <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-ink" /> Your team on the map: lit rooms work, grey rooms are waiting.</li>
-            <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-ink" /> One next step at a time, never a wall of options.</li>
+            {ui.studio.points.map((p) => (
+              <li key={p} className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-ink" /> {p}</li>
+            ))}
           </ul>
         </div>
         <div className="md:col-span-7">
           <div className="plate reveal bg-white p-3 md:p-6" data-delay="1">
             <span className="mark-b" />
             <div className="label flex justify-between px-1">
-              <span>Galos Studio · map</span>
-              <span className="flex items-center gap-2">Example <Pending note="A real screenshot of the Studio when it exists (13_sections/01_home/06_your-studio)." align="right" /></span>
+              <span>{ui.studio.map}</span>
+              <span className="flex items-center gap-2">{ui.studio.example} <Pending note="A real screenshot of the Studio when it exists (13_sections/01_home/06_your-studio)." align="right" /></span>
             </div>
-            <svg viewBox="0 0 600 600" className="mt-2 w-full" role="img" aria-label="The Studio map: Galos in the middle and five rooms, one per wing" data-reveal>
+            <svg viewBox="0 0 600 600" className="mt-2 w-full" role="img" aria-label={ui.studio.aria} data-reveal>
               {wings.map((w, i) => {
                 const a = (-90 + i * 72) * (Math.PI / 180);
                 const x = C + Math.cos(a) * R, y = C + Math.sin(a) * R;
@@ -47,10 +48,10 @@ export function YourStudio() {
                     <line x1={C} y1={C} x2={x} y2={y} stroke={lit ? "var(--color-ink)" : "var(--color-line-strong)"} strokeWidth={1} strokeDasharray={lit ? undefined : "3 5"} />
                     <rect x={x - W / 2} y={y - H / 2} width={W} height={H} rx={16} fill={lit ? "var(--color-ink)" : "var(--color-wash)"} stroke={lit ? "none" : "var(--color-line-strong)"} strokeDasharray={lit ? undefined : "3 5"} />
                     <text x={x - W / 2 + 16} y={y - H / 2 + 26} fontSize={12} fontWeight={600} letterSpacing="0.12em" fill={lit ? "var(--color-white)" : "var(--color-muted)"} opacity={lit ? 0.6 : 1}>
-                      {w.name.toUpperCase()}
+                      {w.label.toUpperCase()}
                     </text>
                     <text x={x - W / 2 + 16} y={y - H / 2 + 58} fontSize={21} fontWeight={700} letterSpacing="-0.02em" fill={lit ? "var(--color-white)" : "var(--color-faint)"}>
-                      {lit ? hired.join(", ") : "Hire"}
+                      {lit ? hired.join(", ") : ui.studio.hire}
                     </text>
                     {lit ? (
                       <circle cx={x + W / 2 - 18} cy={y - H / 2 + 22} r={3.5} fill="var(--color-white)" className="twinkle" />

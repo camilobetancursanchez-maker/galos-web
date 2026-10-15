@@ -1,18 +1,22 @@
 import Link from "next/link";
-import { faq, faqPending, home } from "@/content/site";
+import { copy } from "@/content";
+import { to } from "@/lib/i18n";
+import { pageLang } from "@/lib/lang";
 import { GalosStar } from "@/components/sky/GalosStar";
 import { Pending } from "@/components/ui/Pending";
 
 /** 10 · Questions + the final call: the north star. Section: 13_sections/01_home/10_questions-and-final-call */
-export function FinalCall() {
+export async function FinalCall() {
+  const lang = await pageLang();
+  const { faq, faqPending, home, ui } = copy(lang);
   const { final } = home;
   return (
     <>
       <section className="section wrap grid gap-12 md:grid-cols-12">
         <div className="reveal md:col-span-4">
-          <p className="label eyebrow !text-ink">Questions</p>
+          <p className="label eyebrow !text-ink">{ui.questions}</p>
           <h2 className="h2 mt-6">
-            Before you ask Galos. <Pending note={faqPending} />
+            {ui.beforeYouAsk} <Pending note={faqPending} />
           </h2>
         </div>
         <div className="reveal md:col-span-8" data-delay="1">
@@ -40,7 +44,7 @@ export function FinalCall() {
           <p className="lead mx-auto mt-6">
             {final.sub.text} <Pending note={final.sub.pending} align="center" />
           </p>
-          <Link href="/ask" className="btn btn-ink btn-lg mt-10">Ask Galos</Link>
+          <Link href={to(lang, "/ask")} className="btn btn-ink btn-lg mt-10">{ui.askGalos}</Link>
         </div>
       </section>
     </>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { home } from "@/content/site";
+import { copy } from "@/content";
+import { useLang } from "@/lib/useLang";
 import { Pending } from "@/components/ui/Pending";
 
 /**
@@ -39,7 +40,7 @@ export function HowItWorks() {
     };
   }, []);
 
-  const { how } = home;
+  const { how } = copy(useLang()).home;
   const n = how.steps.length;
   const at = (i: number) => i / (n - 1);
 

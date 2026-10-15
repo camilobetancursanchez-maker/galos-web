@@ -1,13 +1,16 @@
 import Link from "next/link";
-import { agents } from "@/content/agents";
-import { home } from "@/content/site";
+import { copy } from "@/content";
+import { to } from "@/lib/i18n";
+import { pageLang } from "@/lib/lang";
 import { figureMap } from "@/lib/images";
 import { SkyMap } from "@/components/sky/SkyMap";
 import { AgentCard } from "@/components/agents/AgentCard";
 import { Pending } from "@/components/ui/Pending";
 
 /** 05 · Meet the workers — the sky, then the first three walls. Section: 13_sections/01_home/05_meet-the-workers */
-export function MeetTheWorkers() {
+export async function MeetTheWorkers() {
+  const lang = await pageLang();
+  const { agents, home, ui } = copy(lang);
   const { workers: collection } = home;
   const first = agents.slice(0, 3);
   const figures = figureMap(first.map((a) => a.slug));
@@ -23,14 +26,14 @@ export function MeetTheWorkers() {
             {collection.line.text} <Pending note={collection.line.pending} />
           </p>
         </div>
-        <SkyMap className="mt-14 md:mt-20" />
+        <SkyMap lang={lang} className="mt-14 md:mt-20" />
         <div className="mt-24 grid gap-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
           {first.map((a, i) => (
-            <AgentCard key={a.slug} agent={a} src={figures[a.slug]} delay={i} />
+            <AgentCard key={a.slug} lang={lang} agent={a} src={figures[a.slug]} delay={i} />
           ))}
         </div>
         <div className="mt-16 flex justify-center">
-          <Link href="/workers" className="btn btn-line btn-lg">See all ten workers</Link>
+          <Link href={to(lang, "/workers")} className="btn btn-line btn-lg">{ui.seeAllWorkers}</Link>
         </div>
       </div>
     </section>

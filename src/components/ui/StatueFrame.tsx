@@ -1,5 +1,7 @@
 import Image from "next/image";
+import { copy } from "@/content";
 import type { Agent } from "@/content/agents";
+import type { Lang } from "@/lib/i18n";
 import { Constellation } from "@/components/sky/Constellation";
 import { Pending } from "./Pending";
 
@@ -9,22 +11,25 @@ import { Pending } from "./Pending";
  * on its plinth, with the one black signal point.
  */
 export function StatueFrame({
+  lang,
   agent,
   src,
   size = "md",
   priority = false,
 }: {
+  lang: Lang;
   agent: Agent;
   src?: string;
   size?: "md" | "lg";
   priority?: boolean;
 }) {
+  const { statue } = copy(lang).ui;
   return (
     <figure className="relative">
       <div className="plate relative aspect-[4/5] overflow-hidden bg-wash" data-reveal>
         <span className="mark-b" />
         {src ? (
-          <Image src={src} alt={`${agent.figure}, ${agent.role}: a classical statue`} fill priority={priority} sizes={size === "lg" ? "(min-width: 1024px) 50vw, 100vw" : "(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"} className="object-cover" />
+          <Image src={src} alt={statue.alt(`${agent.figure}, ${agent.role}`)} fill priority={priority} sizes={size === "lg" ? "(min-width: 1024px) 50vw, 100vw" : "(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"} className="object-cover" />
         ) : (
           <>
             {/* museum light from above */}
@@ -44,7 +49,7 @@ export function StatueFrame({
             {/* the black signal point */}
             <span className="twinkle absolute bottom-[19%] left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-ink" />
             <div className="absolute left-3 top-3 flex items-center gap-2">
-              <span className="label">Statue · figure-{agent.slug}</span>
+              <span className="label">{statue.label} · figure-{agent.slug}</span>
               <Pending note={`Statue of ${agent.figure} from Higgsfield (04_art-direction → 11_site-images/figure-${agent.slug}.png).`} />
             </div>
           </>

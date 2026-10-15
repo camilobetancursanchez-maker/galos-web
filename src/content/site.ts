@@ -262,6 +262,7 @@ export const pages = {
     breadcrumb: "Workers",
     hire: (f: string) => `Hire ${f}`,
     buy: "Buy",
+    buyCta: (f: string) => `Buy ${f}`,
     tryMe: "Try me",
     tryTitle: (f: string) => `Try ${f} on your own business.`,
     soon: "Coming soon",

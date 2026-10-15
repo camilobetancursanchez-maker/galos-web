@@ -2,17 +2,20 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { home } from "@/content/site";
-import { wings } from "@/content/agents";
+import { copy } from "@/content";
+import { to } from "@/lib/i18n";
+import { useLang } from "@/lib/useLang";
 import { GalosStar } from "@/components/sky/GalosStar";
 
 /** 04 · Ask Galos prompt — one question on one wall. The tap answers are the 5 wing problems. Section: 13_sections/01_home/04_ask-galos-prompt */
 export function AskPrompt() {
   const router = useRouter();
   const [text, setText] = useState("");
+  const lang = useLang();
+  const { home, wings, ui } = copy(lang);
   const { ask } = home;
 
-  const go = (q: string) => router.push(`/ask?mode=chat&pain=${encodeURIComponent(q)}`);
+  const go = (q: string) => router.push(to(lang, `/ask?mode=chat&pain=${encodeURIComponent(q)}`));
 
   return (
     <section id="ask" className="section">
@@ -29,19 +32,19 @@ export function AskPrompt() {
               if (text.trim()) go(text.trim());
             }}
           >
-            <label htmlFor="ask-input" className="sr-only">Tell Galos what&apos;s slowing your business down</label>
+            <label htmlFor="ask-input" className="sr-only">{ui.askPrompt.sr}</label>
             <input
               id="ask-input"
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Type it in your own words…"
+              placeholder={ui.askPrompt.placeholder}
               className="h-12 min-w-0 flex-1 bg-transparent px-4 text-[17px] outline-none placeholder:text-faint"
             />
-            <button type="submit" className="btn btn-ink shrink-0" aria-label="Ask Galos">
-              Ask <span aria-hidden>→</span>
+            <button type="submit" className="btn btn-ink shrink-0" aria-label={ui.askGalos}>
+              {ui.askPrompt.send} <span aria-hidden>→</span>
             </button>
           </form>
-          <p className="label mt-8">or pick one</p>
+          <p className="label mt-8">{ui.askPrompt.or}</p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             {[...wings.map((w) => w.problem), ask.other].map((label) => (
               <button key={label} type="button" className="chip" onClick={() => go(label)}>

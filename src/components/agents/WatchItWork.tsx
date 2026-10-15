@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { copy } from "@/content";
 import type { Agent } from "@/content/agents";
+import { useLang } from "@/lib/useLang";
 import { Pending } from "@/components/ui/Pending";
 
 /**
@@ -15,6 +17,7 @@ export function WatchItWork({ agent }: { agent: Agent }) {
   const [active, setActive] = useState(-1);
   const [auto, setAuto] = useState(true);
   const box = useRef<HTMLDivElement>(null);
+  const { watch } = copy(useLang()).ui;
 
   useEffect(() => {
     const el = box.current;
@@ -50,8 +53,8 @@ export function WatchItWork({ agent }: { agent: Agent }) {
     <div ref={box} className="grid gap-12 md:grid-cols-12 md:items-center">
       <div className="plate relative aspect-square bg-white md:col-span-7">
         <span className="mark-b" />
-        <span className="label absolute left-4 top-4">{agent.catalog} · in motion</span>
-        <svg viewBox="-10 -10 120 120" className="absolute inset-[10%] h-[80%] w-[80%]" aria-label={`${agent.figure}'s constellation, drawn step by step`}>
+        <span className="label absolute left-4 top-4">{agent.catalog} · {watch.motion}</span>
+        <svg viewBox="-10 -10 120 120" className="absolute inset-[10%] h-[80%] w-[80%]" aria-label={watch.aria(agent.figure)}>
           {agent.edges.map(([a, b], i) => {
             const [x1, y1] = agent.stars[a];
             const [x2, y2] = agent.stars[b];
@@ -80,7 +83,7 @@ export function WatchItWork({ agent }: { agent: Agent }) {
       </div>
       <div className="md:col-span-5">
         <p className="label eyebrow !text-ink">
-          Watch it work <Pending note={agent.steps.pending} />
+          {watch.title} <Pending note={agent.steps.pending} />
         </p>
         <ol className="mt-8 border-t border-line">
           {steps.map((s, i) => {

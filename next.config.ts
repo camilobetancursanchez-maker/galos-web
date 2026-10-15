@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-// GitHub Pages build: plain static files served under /<repo>
+// GitHub Pages build (scripts/deploy-pages.sh): plain static files served under /galos-web
 const pages = process.env.GITHUB_PAGES === "true";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 

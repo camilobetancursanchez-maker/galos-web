@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { home } from "@/content/site";
+import { copy } from "@/content";
+import { to } from "@/lib/i18n";
+import { useLang } from "@/lib/useLang";
 import { Starfield } from "@/components/sky/Starfield";
 import { Pending } from "@/components/ui/Pending";
 
@@ -27,6 +29,8 @@ export function Hero() {
     return () => window.removeEventListener("pointermove", on);
   }, []);
 
+  const lang = useLang();
+  const { home, ui } = copy(lang);
   const { hero } = home;
   return (
     <section className="relative h-[100svh] min-h-[640px] overflow-hidden bg-sky">
@@ -46,7 +50,7 @@ export function Hero() {
         <div className="label absolute bottom-3 left-4 md:bottom-4 md:left-5">
           <span ref={coords} className="num">RA 00h 00m · Dec +00° 00′</span>
         </div>
-        <div className="label absolute bottom-3 left-1/2 hidden -translate-x-1/2 md:bottom-4 md:block">Move to find the order</div>
+        <div className="label absolute bottom-3 left-1/2 hidden -translate-x-1/2 md:bottom-4 md:block">{ui.hero.move}</div>
       </div>
 
       <div className="wrap relative flex h-full flex-col items-center justify-center px-7 text-center">
@@ -60,8 +64,8 @@ export function Hero() {
           {hero.sub.text} <Pending note={hero.sub.pending} align="center" />
         </p>
         <div className="rise mt-10 flex flex-col items-center gap-3 sm:flex-row" style={{ animationDelay: "1500ms" }}>
-          <Link href="/ask" className="btn btn-ink btn-lg">Ask Galos what I need</Link>
-          <Link href="/workers" className="btn btn-line btn-lg">See the workers</Link>
+          <Link href={to(lang, "/ask")} className="btn btn-ink btn-lg">{ui.hero.ask}</Link>
+          <Link href={to(lang, "/workers")} className="btn btn-line btn-lg">{ui.hero.see}</Link>
         </div>
       </div>
 

@@ -1,10 +1,14 @@
 "use client";
 
+import { copy } from "@/content";
+import { useLang } from "@/lib/useLang";
+
 /**
  * Light / dark switch: the white sky with black stars, or the night sky with white stars.
  * Sets data-theme on <html> (globals.css flips the tokens) and remembers the choice.
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
+  const { theme } = copy(useLang()).ui;
   const toggle = () => {
     const root = document.documentElement;
     const dark = root.dataset.theme !== "dark";
@@ -20,8 +24,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={toggle}
-      aria-label="Switch between light and dark mode"
-      title="Light / dark"
+      aria-label={theme.label}
+      title={theme.title}
       className={`flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-wash ${className}`}
     >
       {/* moon: to the night sky */}

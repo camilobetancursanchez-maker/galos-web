@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { home, site } from "@/content/site";
+import { copy } from "@/content";
+import { to } from "@/lib/i18n";
+import { pageLang } from "@/lib/lang";
 import { Pending } from "@/components/ui/Pending";
 
 /** 09 · Custom projects — the one black card: a star that isn't in the Collection yet. Section: 13_sections/01_home/09_custom */
-export function Custom() {
+export async function Custom() {
+  const lang = await pageLang();
+  const { home, site, ui } = copy(lang);
   const { custom } = home;
   return (
     <section className="section pt-0">
@@ -25,8 +29,8 @@ export function Custom() {
               {custom.text.text} <Pending note={custom.text.pending} />
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <Link href={site.bookingUrl} className="btn btn-lg bg-white text-ink hover:bg-wash">Book a call</Link>
-              <Link href="/custom" className="btn btn-lg text-white shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--color-white)_40%,transparent)] hover:bg-white/10">See past work</Link>
+              <Link href={to(lang, site.bookingUrl)} className="btn btn-lg bg-white text-ink hover:bg-wash">{ui.bookCall}</Link>
+              <Link href={to(lang, "/custom")} className="btn btn-lg text-white shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--color-white)_40%,transparent)] hover:bg-white/10">{ui.custom.past}</Link>
             </div>
           </div>
         </div>

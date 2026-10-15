@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { home } from "@/content/site";
+import { copy } from "@/content";
+import { to } from "@/lib/i18n";
+import { pageLang } from "@/lib/lang";
 import { Pending } from "@/components/ui/Pending";
 
 /** 07 · Pricing in one line. Section: 13_sections/01_home/07_pricing */
-export function PricingLine() {
+export async function PricingLine() {
+  const lang = await pageLang();
+  const { home, ui } = copy(lang);
   const { pricing } = home;
   return (
     <section className="wrap">
@@ -24,7 +28,7 @@ export function PricingLine() {
             </div>
           ))}
         </div>
-        <Link href="/pricing" className="btn btn-line btn-lg mt-12">See pricing</Link>
+        <Link href={to(lang, "/pricing")} className="btn btn-line btn-lg mt-12">{ui.seePricing}</Link>
       </div>
     </section>
   );

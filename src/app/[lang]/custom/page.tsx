@@ -1,38 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { site } from "@/content/site";
+import { copy } from "@/content";
+import { to } from "@/lib/i18n";
+import { pageLang } from "@/lib/lang";
 import { PageHead } from "@/components/ui/PageHead";
 import { Pending } from "@/components/ui/Pending";
 
-export const metadata: Metadata = { title: "Custom projects" };
-
-const BUILD = [
-  ["Websites", "Built in code, connected to your CRM. Like Finaro."],
-  ["Apps", "Tools made for one business: portals, trackers, internal apps."],
-  ["Brands", "Logo, brand kit and the visual system around it."],
-  ["Automations", "The complex flows that don't fit one worker."],
-];
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: copy(await pageLang()).pages.custom.title };
+}
 const WORK = ["Finaro", "Crambol", "Zalina", "Yuki"];
 
 /** Custom projects. Sections: 13_sections/06_custom · copy: 07_content/Page — Custom */
-export default function CustomPage() {
+export default async function CustomPage() {
+  const lang = await pageLang();
+  const { site, ui, pages } = copy(lang);
+  const t = pages.custom;
   return (
     <>
       <PageHead
         index="Cat. GLS-0??"
-        eyebrow="Custom projects"
-        title="Don't see your problem? We build it."
-        lead="Some businesses need a piece that isn't in the Collection. We make it for you, from the first sketch to the day it goes live."
+        eyebrow={t.title}
+        title={t.heading}
+        lead={t.lead}
         pending="Copy: 07_content/Page — Custom."
       />
 
       {/* 01 · What we build */}
       <section className="section wrap pt-20">
         <ol className="border-t border-ink">
-          {BUILD.map(([t, d], i) => (
-            <li key={t} className="reveal grid gap-2 border-b border-line py-8 md:grid-cols-12 md:items-baseline">
+          {t.build.map(([b, d], i) => (
+            <li key={b} className="reveal grid gap-2 border-b border-line py-8 md:grid-cols-12 md:items-baseline">
               <span className="label num md:col-span-1">0{i + 1}</span>
-              <h2 className="h2 md:col-span-5">{t}</h2>
+              <h2 className="h2 md:col-span-5">{b}</h2>
               <p className="text-[19px] text-muted md:col-span-6">{d}</p>
             </li>
           ))}
@@ -41,7 +41,7 @@ export default function CustomPage() {
 
       {/* 02 · Past work */}
       <section className="wrap">
-        <p className="label eyebrow !text-ink">Past work <Pending note="Screenshots and mockups of each project (13_sections/06_custom/02_past-work)." /></p>
+        <p className="label eyebrow !text-ink">{t.past} <Pending note="Screenshots and mockups of each project (13_sections/06_custom/02_past-work)." /></p>
         <div className="mt-8 grid gap-6 sm:grid-cols-2">
           {WORK.map((w, i) => (
             <figure key={w} className="reveal" data-delay={i % 2}>
@@ -51,7 +51,7 @@ export default function CustomPage() {
               </div>
               <figcaption className="mt-4 flex justify-between text-[15px]">
                 <span className="font-semibold">{w}</span>
-                <span className="text-muted">Work {String(i + 1).padStart(2, "0")}</span>
+                <span className="text-muted">{t.work} {String(i + 1).padStart(2, "0")}</span>
               </figcaption>
             </figure>
           ))}
@@ -61,9 +61,9 @@ export default function CustomPage() {
       {/* 03 · Book a call */}
       <section id="book" className="section wrap">
         <div className="reveal rounded-[28px] bg-ink px-6 py-16 text-center text-white md:py-24">
-          <h2 className="h2">Tell us what you want to build.</h2>
-          <p className="mx-auto mt-4 max-w-md text-white/70">A 25-minute call. You leave with a plan, whether you build it with us or not.</p>
-          <Link href={site.bookingUrl} className="btn btn-lg mt-10 bg-white text-ink hover:bg-wash">Book a call</Link>
+          <h2 className="h2">{t.bookTitle}</h2>
+          <p className="mx-auto mt-4 max-w-md text-white/70">{t.bookLine}</p>
+          <Link href={to(lang, site.bookingUrl)} className="btn btn-lg mt-10 bg-white text-ink hover:bg-wash">{ui.bookCall}</Link>
           <p className="mt-4"><Pending note="GoHighLevel calendar link (NEXT_PUBLIC_BOOKING_URL)." align="center" /></p>
         </div>
       </section>
