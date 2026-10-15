@@ -7,7 +7,8 @@ cd "$(dirname "$0")/.."
 REPO=https://github.com/camilobetancursanchez-maker/galos-web.git
 
 mv src/proxy.ts /tmp/galos-proxy.ts
-trap 'mv /tmp/galos-proxy.ts src/proxy.ts' EXIT
+ROOT=$PWD
+trap 'mv /tmp/galos-proxy.ts "$ROOT/src/proxy.ts"' EXIT
 rm -rf out
 GITHUB_PAGES=true NEXT_PUBLIC_BASE_PATH=/galos-web \
   NEXT_PUBLIC_SITE_URL=https://camilobetancursanchez-maker.github.io/galos-web npx next build
