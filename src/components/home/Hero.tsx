@@ -57,7 +57,7 @@ export function Hero() {
         <p className="label eyebrow rise !text-ink" style={{ animationDelay: "900ms" }}>
           {hero.eyebrow}
         </p>
-        <h1 className="display rise mt-6 max-w-[13ch]" style={{ animationDelay: "1100ms" }}>
+        <h1 className="display rise mt-6 max-w-[16ch] text-[clamp(38px,5.4vw,80px)]" style={{ animationDelay: "1100ms" }}>
           {hero.title.text}
         </h1>
         <p className="lead rise mx-auto mt-6 max-w-[34em]" style={{ animationDelay: "1300ms" }}>
