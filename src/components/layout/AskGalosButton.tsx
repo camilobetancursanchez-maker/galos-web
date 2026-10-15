@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { copy } from "@/content";
-import { langOf, to } from "@/lib/i18n";
+import { langOf, to, shownPath } from "@/lib/i18n";
 import { GalosStar } from "@/components/sky/GalosStar";
 
 /**
@@ -12,7 +12,7 @@ import { GalosStar } from "@/components/sky/GalosStar";
  * Tap → Chat or Speak. Section: 13_sections/00_every-page/02_ask-galos-button
  */
 export function AskGalosButton() {
-  const pathname = usePathname();
+  const pathname = shownPath(usePathname());
   const lang = langOf(pathname);
   const { ui } = copy(lang);
   // Open for one page only: changing page closes it

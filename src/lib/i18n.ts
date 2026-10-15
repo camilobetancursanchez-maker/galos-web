@@ -20,6 +20,10 @@ export function to(lang: Lang, href: string): string {
   return "/es" + href;
 }
 
+/** The path as the browser shows it: the static build (GitHub Pages, no proxy) renders English pages at "/en/...". */
+export const shownPath = (pathname: string): string =>
+  pathname === "/en" ? "/" : pathname.startsWith("/en/") ? pathname.slice(3) : pathname;
+
 /** The same page in the other language ("/es/workers" ↔ "/workers"). */
 export function switchPath(pathname: string, lang: Lang): string {
   const bare = langOf(pathname) === "es" ? pathname.slice(3) || "/" : pathname;

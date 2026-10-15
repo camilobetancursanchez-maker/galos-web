@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { copy } from "@/content";
-import { langOf, switchPath, to } from "@/lib/i18n";
+import { langOf, switchPath, to, shownPath } from "@/lib/i18n";
 import { GalosStar } from "@/components/sky/GalosStar";
 import { ThemeToggle } from "./ThemeToggle";
 
 /** Section: 13_sections/00_every-page/01_header-nav */
 export function Header() {
-  const pathname = usePathname();
+  const pathname = shownPath(usePathname());
   const lang = langOf(pathname);
   const { site, ui } = copy(lang);
   const other = lang === "es" ? "en" : "es";
